@@ -4,12 +4,11 @@ using System.Text;
 namespace Enigma.Elements
 {
     /// <summary>
-    /// A reproduction of the Enigma's rotor.
+    /// A modelisation of the Enigma's rotor.
     /// Rotors were cylinders whose each side were made of 26 electrically connected dots, one for each letter.
-    /// On one side, the current was coming entered a dot, then exited through another dot on the opposite side.
+    /// On one side, the current entered a dot, then exited through another dot on the opposite side.
     /// The mapping from dot to dot was the rotor's encryption key.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class Rotor
     {
         public enum RotorType { Alphabetical, ReverseAlphabetical, TypeI };
@@ -17,9 +16,13 @@ namespace Enigma.Elements
         private int length;
         private Connection[] rotor;
         private Connection[] initialRotor;
-        private RotorType type;
+        private RotorType type;        
 
-        public static readonly char[] Alphabet = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
+        /// <summary>
+        /// Deflectors are special rotors that send the electric 
+        /// current back to the previous rotor, transforming the x + 1 rotors in x*2 + 1.
+        /// </summary>
+        public bool IsDeflector { get; set; }
 
         public RotorType Type { get { return type; } }
 
@@ -39,9 +42,9 @@ namespace Enigma.Elements
         {
             foreach (Connection connection in rotor)
             {
-                if (connection.Key.Equals(key))
+                if (connection.Start.Equals(key))
                 {
-                    return connection.Value;
+                    return connection.End;
                 }
             }
 
@@ -49,21 +52,17 @@ namespace Enigma.Elements
         }
 
         /// <summary>
-        /// Offsets the rotor of x steps clockwise.
+        /// Offsets the rotor of x steps clockwise. 
+        /// In reality, makes the drum rotate of x notches, setting new paths for the current.
         /// </summary>
-        public void Step(int offset)
+        public void SetAtStep(int offset)
         {
             // Rebuilds the rotor
             Connection[] incrementedRotor = new Connection[length];
 
-            for (int i = 0; i < length - offset; i++)
+            for (int i = 0; i < length; i++)
             {
-                incrementedRotor[i] = rotor[i + offset];
-            }
-
-            for (int i = length-offset; i < length; i++)
-            {
-                incrementedRotor[i] = rotor[i - offset];
+                incrementedRotor[i] = initialRotor[(i + offset) % length];
             }
 
             rotor = incrementedRotor;
@@ -78,7 +77,7 @@ namespace Enigma.Elements
         }
 
         /// <summary>
-        /// Sets the rotor at a determined key.
+        /// Sets the rotor at a determined key. That is, a specific rotation of the rotor.
         /// Example : if the key is "B", then the rotor must be turned one notch clockwise.  If the key is "Z", then it must be turned 25 notches clockwise.
         /// </summary>
         /// <param name="key">Letter whose index sets the number of notches the rotor must be stepped.</param>
@@ -86,9 +85,9 @@ namespace Enigma.Elements
         {
             int keyToInt = -1;
 
-            for (int i = 0; i < Alphabet.Length; i++)
+            for (int i = 0; i < AlphabetStruct.Alphabet.Length; i++)
             {
-                if (Alphabet[i].Equals(key))
+                if (AlphabetStruct.Alphabet[i].Equals(key))
                 {
                     keyToInt = i;
                     break;
@@ -100,7 +99,7 @@ namespace Enigma.Elements
                 throw new ArgumentOutOfRangeException(string.Format("The rotor key {0} is not a valid key", key));
             }
 
-            Step(keyToInt);
+            SetAtStep(keyToInt);
         }
 
         public Rotor(Connection[] connections)
@@ -115,8 +114,9 @@ namespace Enigma.Elements
             // Use the default rotor type.
             type = RotorType.ReverseAlphabetical;
 
-            rotor = GenerateFixedConnections(26);
+            rotor = GenerateReverseAlphabeticalConnections(26);
             length = 26;
+            this.initialRotor = rotor;
         }
 
         /// <summary>
@@ -130,6 +130,13 @@ namespace Enigma.Elements
                 rotor = GenerateAlphabeticalRotor(26);
                 length = 26;
             }
+            else if (type == RotorType.ReverseAlphabetical)
+            {
+                rotor = GenerateReverseAlphabeticalConnections(26);
+                length = 26;
+            }
+
+            this.initialRotor = rotor;
         }
 
         /// <summary>
@@ -139,7 +146,7 @@ namespace Enigma.Elements
         /// <returns>An array of connections.</returns>
         private Connection[] GenerateAlphabeticalRotor(int number)
         {
-            if (number < 1 || number > Alphabet.Length)
+            if (number < 1 || number > AlphabetStruct.Alphabet.Length)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -148,7 +155,7 @@ namespace Enigma.Elements
 
             for (int i = 0; i < number; i++)
             {
-                result[i] = new Connection(Alphabet[i], Alphabet[i]);
+                result[i] = new Connection(AlphabetStruct.Alphabet[i], AlphabetStruct.Alphabet[i]);
             }
 
             return result;
@@ -160,9 +167,9 @@ namespace Enigma.Elements
         /// </summary>
         /// <param name="number">The number of connections. Generally 26 for the whole alphabet.</param>
         /// <returns>An array of connections.</returns>
-        private Connection[] GenerateFixedConnections(int number)
+        private Connection[] GenerateReverseAlphabeticalConnections(int number)
         {
-            if (number < 1 || number > Alphabet.Length)
+            if (number < 1 || number > AlphabetStruct.Alphabet.Length)
             {
                 throw new ArgumentOutOfRangeException();
             }
@@ -171,7 +178,7 @@ namespace Enigma.Elements
 
             for (int i = 0; i < number; i++)
             {
-                result[i] = new Connection(Alphabet[i], Alphabet[number - 1 - i]);
+                result[i] = new Connection(AlphabetStruct.Alphabet[i], AlphabetStruct.Alphabet[number - 1 - i]);
             }
 
             return result;
@@ -183,7 +190,7 @@ namespace Enigma.Elements
 
             for (int i = 0; i < rotor.Length; i++)
             {
-                sb.Append(rotor[i].Value);
+                sb.Append(rotor[i].End);
             }
 
             return sb.ToString();

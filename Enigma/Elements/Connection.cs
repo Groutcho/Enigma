@@ -7,21 +7,20 @@ using System.Threading.Tasks;
 namespace Enigma.Elements
 {
     /// <summary>
-    /// In the Enigma, the rotors were made of 26 electrical connections that mapped a letter X to another Y
-    /// X is the key, Y is the  value.
+    /// In the Enigma, the rotors were made of 26 electrical connections that mapped a letter X to another Y.
     /// </summary>
     public struct Connection
     {
-        private readonly char key;
-        private readonly char value;
+        private readonly char start;
+        private readonly char end;
 
-        public char Key { get { return key; } }
-        public char Value { get { return value; } }
+        public char Start { get { return start; } }
+        public char End { get { return end; } }
 
-        public Connection(char key, char value)
+        public Connection(char start, char end)
         {
-            this.key = key;
-            this.value = value;
+            this.start = start;
+            this.end = end;
         }
     }
 }
