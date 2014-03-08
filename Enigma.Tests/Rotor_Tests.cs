@@ -5,7 +5,7 @@ using Enigma.Elements;
 namespace Enigma.Tests
 {
     [TestClass]
-    public class RotorTests
+    public class Rotor_Tests
     {
         [TestMethod]
         public void RotorConstructor()
