@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace Enigma.Elements
 {
     /// <summary>
-    /// In the enigma, the rotor were made of 26 electrical connections that mapped a letter X to another Y
-    /// X -> Y . X is the key, Y is the  value.
+    /// In the Enigma, the rotors were made of 26 electrical connections that mapped a letter X to another Y
+    /// X is the key, Y is the  value.
     /// </summary>
     public struct Connection
     {
