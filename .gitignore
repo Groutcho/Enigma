@@ -1,0 +1,5 @@
+Enigma.Tests/bin/
+Enigma.Tests/obj/
+Enigma/bin/
+Enigma/obj/
+*.suo
