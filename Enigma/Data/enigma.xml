@@ -1,0 +1,222 @@
+<root>
+  <rotors>
+    <rotor name="IC" type="rotor">
+      <id>IC1924</id>
+      <mapping>DMTWSILRUYQNKFEJCAZBPGXOHV</mapping>
+      <date>1924</date>
+      <model>Commercial Enigma A, B</model>
+    </rotor>
+
+    <rotor name="IIC" type="rotor">
+      <id>IIC1924</id>
+      <mapping>HQZGPJTMOBLNCIFDYAWVEUSRKX</mapping>
+      <date>1924</date>
+      <model>Commercial Enigma A, B</model>
+    </rotor>
+
+    <rotor name="IIIC" type="rotor">
+      <id>IIIC1924</id>
+      <mapping>UQNTLSZFMREHDPXKIBVYGJCWOA</mapping>
+      <date>1924</date>
+      <model>Commercial Enigma A, B</model>
+    </rotor>
+
+    <rotor name="I" type="rotor">
+      <id>IRocket</id>
+      <mapping>UQNTLSZFMREHDPXKIBVYGJCWOA</mapping>
+      <date>7 February 1941</date>
+      <model>German Railway (Rocket)</model>
+    </rotor>
+
+    <rotor name="II" type="rotor">
+      <id>IIRocket</id>
+      <mapping>NTZPSFBOKMWRCJDIVLAEYUXHGQ</mapping>
+      <date>7 February 1941</date>
+      <model>German Railway (Rocket)</model>
+    </rotor>
+
+    <rotor name="III" type="rotor">
+      <id>IIIRocket</id>
+      <mapping>JVIUBHTCDYAKEQZPOSGXNRMWFL</mapping>
+      <date>7 February 1941</date>
+      <model>German Railway (Rocket)</model>
+    </rotor>
+
+    <rotor name="UKW" type="reflector">
+      <id>UKWRocket</id>
+      <mapping>QYHOGNECVPUZTFDJAXWMKISRBL</mapping>
+      <date>7 February 1941</date>
+      <model>German Railway (Rocket)</model>
+    </rotor>
+
+    <rotor name="ETW" type="stator">
+      <id>ETWRocket</id>
+      <mapping>QWERTZUIOASDFGHJKPYXCVBNML</mapping>
+      <date>7 February 1941</date>
+      <model>German Railway (Rocket)</model>
+    </rotor>
+
+    <rotor name="I-K" type="rotor">
+      <id>I-KSwissK</id>
+      <mapping>PEZUOHXSCVFMTBGLRINQJWAYDK</mapping>
+      <date>February 1939</date>
+      <model>Swiss K</model>
+    </rotor>
+
+    <rotor name="II-K" type="rotor">
+      <id>II-KSwissK</id>
+      <mapping>ZOUESYDKFWPCIQXHMVBLGNJRAT</mapping>
+      <date>February 1939</date>
+      <model>Swiss K</model>
+    </rotor>
+
+    <rotor name="III-K" type="rotor">
+      <id>III-KSwissK</id>
+      <mapping>EHRVXGAOBQUSIMZFLYNWKTPDJC</mapping>
+      <date>February 1939</date>
+      <model>Swiss K</model>
+    </rotor>
+
+    <rotor name="UKW-K" type="reflector">
+      <id>UKW-KSwissK</id>
+      <mapping>IMETCGFRAYSQBZXWLHKDVUPOJN</mapping>
+      <date>February 1939</date>
+      <model>Swiss K</model>
+    </rotor>
+
+    <rotor name="ETW-K" type="stator">
+      <id>ETW-KSwissK</id>
+      <mapping>QWERTZUIOASDFGHJKPYXCVBNML</mapping>
+      <date>February 1939</date>
+      <model>Swiss K</model>
+    </rotor>
+
+    <rotor name="I" type="rotor">
+      <id>I-1930</id>
+      <mapping>EKMFLGDQVZNTOWYHXUSPAIBRCJ</mapping>
+      <date>1930</date>
+      <model>Enigma I</model>
+    </rotor>
+
+    <rotor name="II" type="rotor">
+      <id>II-1930</id>
+      <mapping>AJDKSIRUXBLHWTMCQGZNPYFVOE</mapping>
+      <date>1930</date>
+      <model>Enigma I</model>
+    </rotor>
+
+    <rotor name="III" type="rotor">
+      <id>III-1930</id>
+      <mapping>BDFHJLCPRTXVZNYEIWGAKMUSQO</mapping>
+      <date>1930</date>
+      <model>Enigma I</model>
+    </rotor>
+
+    <rotor name="IV" type="rotor">
+      <id>IV-M3</id>
+      <mapping>ESOVPZJAYQUIRHXLNFTGKDCMWB</mapping>
+      <date>December 1938</date>
+      <model>M3 Army</model>
+    </rotor>
+
+    <rotor name="V" type="rotor">
+      <id>V-M3</id>
+      <mapping>VZBRGITYUPSDNHLXAWMJQOFECK</mapping>
+      <date>December 1938</date>
+      <model>M3 Army</model>
+    </rotor>
+
+    <rotor name="VI" type="rotor">
+      <id>VI-M3</id>
+      <mapping>JPGVOUMFYQBENHZRDKASXLICTW</mapping>
+      <date>1939</date>
+      <model>M3 &amp; M4 Naval (February 1942)</model>
+    </rotor>
+
+    <rotor name="VII" type="rotor">
+      <id>VII-M3</id>
+      <mapping>NZJHGRCXMYSWBOUFAIVLPEKQDT</mapping>
+      <date>1939</date>
+      <model>M3 &amp; M4 Naval (February 1942)</model>
+    </rotor>
+
+    <rotor name="VIII" type="rotor">
+      <id>VIII-M3</id>
+      <mapping>FKQHTLXOCBJSPDZRAMEWNIUYGV</mapping>
+      <date>1939</date>
+      <model>M3 &amp; M4 Naval (February 1942)</model>
+    </rotor>
+
+    <rotor name="Beta" type="rotor">
+      <id>Beta</id>
+      <mapping>LEYJVCNIXWPBQMDRTAKZGFUHOS</mapping>
+      <date>Spring 1941</date>
+      <model>M4 R2</model>
+    </rotor>
+
+    <rotor name="Gamma" type="rotor">
+      <id>Gamma</id>
+      <mapping>FSOKANUERHMBTIYCWLQPZXVGJD</mapping>
+      <date>Spring 1942</date>
+      <model>M4 R2</model>
+    </rotor>
+
+    <rotor name="Reflector A" type="reflector">
+      <id>ReflectorA</id>
+      <mapping>EJMZALYXVBWFCRQUONTSPIKHGD</mapping>
+      <date></date>
+      <model></model>
+    </rotor>
+
+    <rotor name="Reflector B" type="reflector">
+      <id>ReflectorB</id>
+      <mapping>YRUHQSLDPXNGOKMIEBFZCWVJAT</mapping>
+      <date></date>
+      <model></model>
+    </rotor>
+
+    <rotor name="Reflector C" type="reflector">
+      <id>ReflectorC</id>       
+      <mapping>FVPJIAOYEDRZXWGCTKUQSBNMHL</mapping>
+      <date></date>
+      <model></model>
+    </rotor>
+
+    <rotor name="Reflector B Thin" type="reflector">
+      <id>ReflectorBthin</id>
+      <mapping>ENKQAUYWJICOPBLMDXZVFTHRGS</mapping>
+      <date>1940</date>
+      <model>M4 R1 (M3 + Thin)</model>
+    </rotor>
+
+    <rotor name="Reflector C Thin" type="reflector">
+      <id>ReflectorCthin</id>
+      <mapping>RDOBJNTKVEHMLFCWZAXGYIPSUQ</mapping>
+      <date>1940</date>
+      <model>M4 R1 (M3 + Thin)</model>
+    </rotor>
+
+    <rotor name="ETW" type="stator">
+      <id>ETW-1940</id>
+      <mapping>ABCDEFGHIJKLMNOPQRSTUVWXYZ</mapping>
+      <date>1940</date>
+      <model>Enigma I</model>
+    </rotor>
+  </rotors>
+
+  <!--Presets that follow historical enigma setups-->
+  <devices>
+    <device name="German Railway (Rocket)">
+      <description>From 7 February 1941 the Government Code and Cipher School (GC &amp; CS) decrypted
+        what they believed to be a new variant of the Enigma traffic, introduced by the
+        Germans on 23 January.</description>
+      <rotors>
+        <rotor>ETWRocket</rotor>
+        <rotor>IRocket</rotor>
+        <rotor>IIRocket</rotor>
+        <rotor>IIIRocket</rotor>
+        <rotor>UKWRocket</rotor>
+      </rotors>
+    </device>
+  </devices>
+</root>
