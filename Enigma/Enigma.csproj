@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elements\AlphabetStruct.cs" />
+    <Compile Include="Elements\AlphabetUtils.cs" />
     <Compile Include="Elements\Connection.cs" />
     <Compile Include="Elements\Rotor.cs" />
     <Compile Include="EnigmaDevice.cs" />
@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Data\enigma.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
