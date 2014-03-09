@@ -53,6 +53,7 @@
     <Compile Include="EnigmaDevice_Tests.cs" />
     <Compile Include="Rotor_Tests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTest1.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Enigma\Enigma.csproj">

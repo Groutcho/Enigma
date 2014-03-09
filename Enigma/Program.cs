@@ -11,8 +11,8 @@ namespace Enigma
     {
         static void Main(string[] args)
         {
-            Rotor rotor = new Rotor(Rotor.RotorType.Alphabetical);
-            Rotor deflector = new Rotor(Rotor.RotorType.Alphabetical);
+            Rotor rotor = new Rotor(Rotor.RotorType.ReverseAlphabetical);
+            Rotor deflector = new Rotor(Rotor.RotorType.ReverseAlphabetical);
             deflector.IsDeflector = true;
 
             EnigmaDevice device = new EnigmaDevice(new Rotor[] { rotor, deflector });

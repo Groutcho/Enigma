@@ -11,16 +11,27 @@ namespace Enigma.Elements
     /// </summary>
     public struct Connection
     {
-        private readonly char start;
-        private readonly char end;
+        private readonly int start;
+        private readonly int end;
+        private readonly int offset;
 
-        public char Start { get { return start; } }
-        public char End { get { return end; } }
+        public int Start { get { return start; } }
+        public int End { get { return end; } }
+        public int Offset { get { return offset; } }
 
         public Connection(char start, char end)
         {
-            this.start = start;
-            this.end = end;
+            var alphabet = new AlphabetUtils();
+
+            // Maps the letter to its corresponding number (A = 0, Z = 25)
+            this.start = alphabet[start];
+            this.end = alphabet[end];
+            this.offset = end - start;
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} <-> {1}", start, end);
         }
     }
 }

@@ -7,6 +7,8 @@ namespace Enigma.Tests
     [TestClass]
     public class Rotor_Tests
     {
+        AlphabetUtils alphabet = new AlphabetUtils();
+
         [TestMethod]
         public void RotorConstructor()
         {
@@ -20,20 +22,9 @@ namespace Enigma.Tests
         {
             Rotor rotor = new Rotor(Rotor.RotorType.Alphabetical);
 
-            foreach (char letter in AlphabetStruct.Alphabet)
+            foreach (char letter in AlphabetUtils.Alphabet)
             {
-                Assert.AreEqual(letter, rotor[letter]);
-            }
-        }
-
-        [TestMethod]
-        public void AlphabeticalRotorReturnsCorrectMappingForIndex()
-        {
-            Rotor rotor = new Rotor(Rotor.RotorType.Alphabetical);
-
-            for (int i = 0; i < rotor.Length; i++)
-            {
-                Assert.AreEqual(AlphabetStruct.Alphabet[i], rotor[i].Start);
+                Assert.AreEqual(letter, alphabet[rotor.GetValueFromKey(alphabet[letter], false)]);
             }
         }
 
@@ -45,34 +36,32 @@ namespace Enigma.Tests
             // Step one notch.
             rotor.SetRotorKey('B');
 
-            Assert.AreEqual('B', rotor[0].Start);
-            Assert.AreEqual('C', rotor[1].Start);
-            Assert.AreEqual('D', rotor[2].Start);
-            Assert.AreEqual('E', rotor[3].Start);
-            Assert.AreEqual('F', rotor[4].Start);
-            Assert.AreEqual('G', rotor[5].Start);
-            Assert.AreEqual('H', rotor[6].Start);
-            Assert.AreEqual('I', rotor[7].Start);
-            Assert.AreEqual('J', rotor[8].Start);
-            Assert.AreEqual('K', rotor[9].Start);
-            Assert.AreEqual('L', rotor[10].Start);
-
-            Assert.AreEqual('M', rotor[11].Start);
-            Assert.AreEqual('N', rotor[12].Start);
-            Assert.AreEqual('O', rotor[13].Start);
-            Assert.AreEqual('P', rotor[14].Start);
-            Assert.AreEqual('Q', rotor[15].Start);
-            Assert.AreEqual('R', rotor[16].Start);
-            Assert.AreEqual('S', rotor[17].Start);
-            Assert.AreEqual('T', rotor[18].Start);
-            Assert.AreEqual('U', rotor[19].Start);
-            Assert.AreEqual('V', rotor[20].Start);
-
-            Assert.AreEqual('W', rotor[21].Start);
-            Assert.AreEqual('X', rotor[22].Start);
-            Assert.AreEqual('Y', rotor[23].Start);
-            Assert.AreEqual('Z', rotor[24].Start);
-            Assert.AreEqual('A', rotor[25].Start);
+            Assert.AreEqual('B', alphabet[rotor.GetValueFromKey(alphabet['A'], false)]);
+            Assert.AreEqual('C', alphabet[rotor.GetValueFromKey(alphabet['B'], false)]);
+            Assert.AreEqual('D', alphabet[rotor.GetValueFromKey(alphabet['C'], false)]);
+            Assert.AreEqual('E', alphabet[rotor.GetValueFromKey(alphabet['D'], false)]);
+            Assert.AreEqual('F', alphabet[rotor.GetValueFromKey(alphabet['E'], false)]);
+            Assert.AreEqual('G', alphabet[rotor.GetValueFromKey(alphabet['F'], false)]);
+            Assert.AreEqual('H', alphabet[rotor.GetValueFromKey(alphabet['G'], false)]);
+            Assert.AreEqual('I', alphabet[rotor.GetValueFromKey(alphabet['H'], false)]);
+            Assert.AreEqual('J', alphabet[rotor.GetValueFromKey(alphabet['I'], false)]);
+            Assert.AreEqual('K', alphabet[rotor.GetValueFromKey(alphabet['J'], false)]);
+            Assert.AreEqual('L', alphabet[rotor.GetValueFromKey(alphabet['K'], false)]);
+            Assert.AreEqual('M', alphabet[rotor.GetValueFromKey(alphabet['L'], false)]);
+            Assert.AreEqual('N', alphabet[rotor.GetValueFromKey(alphabet['M'], false)]);
+            Assert.AreEqual('O', alphabet[rotor.GetValueFromKey(alphabet['N'], false)]);
+            Assert.AreEqual('P', alphabet[rotor.GetValueFromKey(alphabet['O'], false)]);
+            Assert.AreEqual('Q', alphabet[rotor.GetValueFromKey(alphabet['P'], false)]);
+            Assert.AreEqual('R', alphabet[rotor.GetValueFromKey(alphabet['Q'], false)]);
+            Assert.AreEqual('S', alphabet[rotor.GetValueFromKey(alphabet['R'], false)]);
+            Assert.AreEqual('T', alphabet[rotor.GetValueFromKey(alphabet['S'], false)]);
+            Assert.AreEqual('U', alphabet[rotor.GetValueFromKey(alphabet['T'], false)]);
+            Assert.AreEqual('V', alphabet[rotor.GetValueFromKey(alphabet['U'], false)]);
+            Assert.AreEqual('W', alphabet[rotor.GetValueFromKey(alphabet['V'], false)]);
+            Assert.AreEqual('X', alphabet[rotor.GetValueFromKey(alphabet['W'], false)]);
+            Assert.AreEqual('Y', alphabet[rotor.GetValueFromKey(alphabet['X'], false)]);
+            Assert.AreEqual('Z', alphabet[rotor.GetValueFromKey(alphabet['Y'], false)]);
+            Assert.AreEqual('A', alphabet[rotor.GetValueFromKey(alphabet['Z'], false)]);
         }
     }
 }

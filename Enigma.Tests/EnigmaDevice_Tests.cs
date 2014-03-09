@@ -72,8 +72,8 @@ namespace Enigma.Tests
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 
             enigma.SetEncryptionKey("A");
-            Assert.AreEqual(AlphabetStruct.AlphabetString, enigma.SubmitString(AlphabetStruct.AlphabetString));
-            Assert.AreEqual(AlphabetStruct.ReverseAlphabetString, enigma.SubmitString(AlphabetStruct.ReverseAlphabetString));
+            Assert.AreEqual(AlphabetUtils.AlphabetString, enigma.SubmitString(AlphabetUtils.AlphabetString));
+            Assert.AreEqual(AlphabetUtils.ReverseAlphabetString, enigma.SubmitString(AlphabetUtils.ReverseAlphabetString));
             Assert.AreEqual(TextToEncrypt, enigma.SubmitString(TextToEncrypt));
 
             //           E    H     L    O
@@ -93,6 +93,26 @@ namespace Enigma.Tests
         }
 
         [TestMethod]
+        public void SetEncryptionKeyReturnsCorrectTextForOneRotorAndOneDeflectorAndOneLetterInput()
+        {
+            const string TextToEncrypt = "A";
+
+            Rotor[] rotors = new Rotor[2];
+
+            rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
+            rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
+            rotors[1].IsDeflector = true;
+
+            EnigmaDevice enigma = new EnigmaDevice(rotors);
+
+            enigma.SetEncryptionKey("BB");
+
+            string encryptedText = enigma.SubmitString(TextToEncrypt);
+
+            Assert.AreEqual(TextToEncrypt, enigma.SubmitString(encryptedText));
+        }
+
+        [TestMethod]
         public void SetEncryptionKeyReturnsCorrectTextForOneRotorAndOneDeflector()
         {
             const string TextToEncrypt = "HELLO";
@@ -100,7 +120,7 @@ namespace Enigma.Tests
             Rotor[] rotors = new Rotor[2];
 
             rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
-            rotors[1] = new Rotor(Rotor.RotorType.Alphabetical);
+            rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
             rotors[1].IsDeflector = true;
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);

@@ -9,7 +9,7 @@ namespace Enigma
 {
     public class EnigmaDevice
     {
-        AlphabetStruct alphabet = new AlphabetStruct();
+        AlphabetUtils alphabet = new AlphabetUtils();
 
         public List<Rotor> Rotors { get { return rotors; } }
 
@@ -30,7 +30,7 @@ namespace Enigma
                 }
 
                 this.rotors.Add(r);
-            }            
+            }
         }
 
         /// <summary>
@@ -40,34 +40,29 @@ namespace Enigma
         /// <returns>The encrypted letter.</returns>
         public char PressKey(char key)
         {
-            int keyIndex = alphabet[key];
+            char lastLetter = key;
+            int lastIndex = alphabet[lastLetter];
             bool endOfCircuit = false;
+            bool reversed = false;
             int currentRotorIndex = 0;
-            char lastLetter = '\0';
             Rotor currentRotor;
-            int increment = 1;
-            
+            int offset = 1;
+
             while (!endOfCircuit)
             {
                 currentRotor = rotors[currentRotorIndex];
 
-                if (increment > 0)
-                {
-                    lastLetter = currentRotor[keyIndex].End;
-                }
-                else
-                {
-                    lastLetter = currentRotor[keyIndex].Start;
-                }
+                lastIndex = currentRotor.GetValueFromKey(lastIndex, reversed);
 
                 // Make the current go back to the previous rotors.
                 if (currentRotor.IsDeflector)
                 {
-                    increment *= -1;
+                    offset *= -1;
+                    reversed = !reversed;
                 }
 
                 // Increment or decrement the current rotor.
-                currentRotorIndex += increment;
+                currentRotorIndex += offset;
 
                 // End of circuit reached.
                 if (currentRotorIndex == rotors.Count || currentRotorIndex < 0)
@@ -76,15 +71,17 @@ namespace Enigma
                 }
             }
 
-            return lastLetter;
+            return alphabet[lastIndex];
         }
+
+        public enum OutputFormatting { Concatenate, HistoricalWW2 }
 
         /// <summary>
         /// Submits a text to the Enigma and get the encrypted result.
         /// </summary>
         /// <param name="input">The desired text.</param>
         /// <returns>The encrypted result</returns>
-        public string SubmitString(string input)
+        public string SubmitString(string input, OutputFormatting formatting = OutputFormatting.Concatenate)
         {
             if (input == null)
             {
@@ -105,7 +102,24 @@ namespace Enigma
                 sb.Append(PressKey(input[i]));
             }
 
-            return sb.ToString();
+            string result = sb.ToString();
+
+            result = FormatOutput(result, formatting);          
+
+            return result;
+        }
+
+        private static string FormatOutput(string result, OutputFormatting formatting)
+        {
+            if (formatting == OutputFormatting.HistoricalWW2)
+            {
+                for (int i = 0; i < result.Length; i += 6)
+                {
+                    result = result.Insert(i, " ");
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
