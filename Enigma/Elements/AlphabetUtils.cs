@@ -69,19 +69,11 @@ namespace Enigma.Elements
         /// <returns>A randomly shuffled alphabet</returns>
         public string GenerateRandomAlphabetOrder()
         {
-            string result = string.Empty;
-
             var alphabet = (char[])Alphabet.Clone();
-            var resultArray = new char[26];
-
-            int k = 26;
-            int i = 0;
 
             Random random = new Random(DateTime.Now.Second);
 
-            resultArray = Shuffle<char>(alphabet, random);
-
-            return new string(resultArray);
+            return new string(Shuffle<char>(alphabet, random));
         }
 
         private int GetLetterIndex(char letter)

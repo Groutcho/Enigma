@@ -17,6 +17,10 @@ namespace Enigma.Elements
 
         public int Start { get { return start; } }
         public int End { get { return end; } }
+
+        /// <summary>
+        /// The function that maps X -> Y
+        /// </summary>
         public int Offset { get { return offset; } }
 
         public Connection(char start, char end)
