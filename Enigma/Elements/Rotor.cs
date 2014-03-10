@@ -25,7 +25,7 @@ namespace Enigma.Elements
         private Connection[] initialMapping;
         private RotorType type = RotorType.Rotor;
         private int offset;
-        private RotorDescriptor descriptor;
+        public RotorDescriptor Descriptor { get; set; }
 
         /// <summary>
         /// The rotation of the rotor. (In notches)
@@ -98,13 +98,6 @@ namespace Enigma.Elements
             mapping = incrementedRotor;
         }
 
-        public Rotor(Connection[] connections)
-        {
-            this.mapping = connections;
-            this.initialMapping = connections;
-            this.length = connections.Length;
-        }
-
         public Rotor()
         {
             // Use the default rotor type.
@@ -122,7 +115,7 @@ namespace Enigma.Elements
         /// <param name="type">The rotor's type (rotor, stator, reflector)</param>
         public Rotor(string mapping, string type)
         {
-            this.mapping = GenerateFromMapping(mapping);
+            this.mapping = GenerateConnectionsFromMapping(mapping);
             this.initialMapping = this.mapping;
 
             this.length = this.mapping.Length;
@@ -144,9 +137,9 @@ namespace Enigma.Elements
 
         public Rotor(RotorDescriptor descriptor)
         {
-            this.descriptor = descriptor;
+            this.Descriptor = descriptor;
 
-            this.mapping = GenerateFromMapping(descriptor.Mapping);
+            this.mapping = GenerateConnectionsFromMapping(descriptor.Mapping);
             this.initialMapping = this.mapping;
 
             this.length = this.mapping.Length;
@@ -171,9 +164,9 @@ namespace Enigma.Elements
         /// </summary>
         /// <param name="mapping">A rotor wiring such as "HQZGPJTMOBLNCIFDYAWVEUSRKX"</param>
         /// <returns>An array of connections</returns>
-        private Connection[] GenerateFromMapping(string mapping)
+        private Connection[] GenerateConnectionsFromMapping(string mapping)
         {
-            bool valid = AlphabetUtils.Instance.IsValidMapping(mapping);
+            bool valid = AlphabetUtils.IsValidMapping(mapping);
 
             if (valid)
             {
