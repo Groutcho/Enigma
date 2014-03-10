@@ -38,7 +38,52 @@ namespace Enigma
 
         private void Deserialize(XDocument doc)
         {
-            GetRotorsTemplates(doc);
+            foreach (var template in GetRotorsTemplates(doc))
+            {
+                rotorModels.Add(template.Descriptor.Id, template);
+            }
+
+            foreach (var template in GetEnigmaPresets(doc))
+            {
+                enigmaModels.Add(template.Descriptor.Id, template);
+            }            
+        }
+
+        private IEnumerable<EnigmaDevice> GetEnigmaPresets(XDocument doc)
+        {
+            IEnumerable<XElement> enigmaCollection;
+
+            try
+            {
+                enigmaCollection = doc.Root.Element("presets").Elements("device");
+            }
+
+            catch (Exception)
+            {
+                throw;
+            }
+
+            var enigmaDescriptors = from enigma in enigmaCollection
+                                   select new EnigmaDescriptor
+                                   {
+                                       Id = (string)enigma.Element("id"),
+                                       Name = (string)enigma.Attribute("name"),
+                                       Description = (string)enigma.Element("description"),
+                                       Rotors = from  rotor in enigma.Element("rotors").Elements("rotor") select rotor.Value
+                                   };
+
+            List<EnigmaDevice> result = new List<EnigmaDevice>(enigmaDescriptors.Count());
+
+            foreach (var descriptor in enigmaDescriptors)
+            {
+                var rotors = from rotor in descriptor.Rotors select rotorModels[rotor];
+
+                EnigmaDevice device = new EnigmaDevice(rotors, descriptor);
+
+                result.Add(device);
+            }
+
+            return result;
         }
 
         private IEnumerable<Rotor> GetRotorsTemplates(XDocument doc)
