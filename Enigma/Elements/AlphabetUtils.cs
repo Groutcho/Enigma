@@ -76,6 +76,11 @@ namespace Enigma.Elements
             return new string(Shuffle<char>(alphabet, random));
         }
 
+        /// <summary>
+        /// Get the index of the input letter in the alphabet. A = 0, Z = 25.
+        /// </summary>
+        /// <param name="letter">An uppercase letter.</param>
+        /// <returns>A number between 0 and 25 included.</returns>
         private int GetLetterIndex(char letter)
         {
             for (int i = 0; i < Alphabet.Length; i++)
