@@ -205,7 +205,7 @@
   </rotors>
 
   <!--Presets that follow historical enigma setups-->
-  <devices>
+  <presets>
     <device name="German Railway (Rocket)">
       <description>From 7 February 1941 the Government Code and Cipher School (GC &amp; CS) decrypted
         what they believed to be a new variant of the Enigma traffic, introduced by the
@@ -218,5 +218,5 @@
         <rotor>UKWRocket</rotor>
       </rotors>
     </device>
-  </devices>
+  </presets>
 </root>
