@@ -4,15 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma.Data
+namespace Enigma.Elements
 {
     /// <summary>
     /// Metadata of the enigma. Historical description, dates...
     /// </summary>
     public class EnigmaDescriptor
     {
-        public string Name { get; }
-        public string Description { get; }
-        public string DateOfIntroduction { get; }
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public string Description { get; set; }
+        public IEnumerable<string> Rotors { get; set; }
     }
 }

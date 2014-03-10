@@ -11,10 +11,16 @@ namespace Enigma
     {
         AlphabetUtils alphabet = new AlphabetUtils();
 
+        public EnigmaDescriptor Descriptor { get; set; }
+
         public List<Rotor> Rotors { get { return rotors; } }
 
         private List<Rotor> rotors = new List<Rotor>();
 
+        /// <summary>
+        /// Creates an enigma from a list of rotor.
+        /// </summary>
+        /// <param name="rotors"></param>
         public EnigmaDevice(IEnumerable<Rotor> rotors)
         {
             if (rotors == null)
@@ -31,6 +37,26 @@ namespace Enigma
 
                 this.rotors.Add(r);
             }
+        }
+
+        public EnigmaDevice(IEnumerable<Rotor> rotors, EnigmaDescriptor descriptor)
+        {
+            if (rotors == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            foreach (Rotor r in rotors)
+            {
+                if (r == null)
+                {
+                    throw new ArgumentNullException();
+                }
+
+                this.rotors.Add(r);
+            }
+
+            this.Descriptor = descriptor;
         }
 
         /// <summary>
