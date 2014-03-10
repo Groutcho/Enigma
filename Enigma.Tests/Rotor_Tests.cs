@@ -29,6 +29,13 @@ namespace Enigma.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(RotorTypeException))]
+        public void WrontRotorTypeGeneratesException()
+        {
+            Rotor rotor = new Rotor(AlphabetUtils.AlphabetString, "error");
+        }
+
+        [TestMethod]
         public void AlphabeticalRotorStepsCorrectly()
         {
             Rotor rotor = new Rotor(AlphabetUtils.AlphabetString, "rotor");

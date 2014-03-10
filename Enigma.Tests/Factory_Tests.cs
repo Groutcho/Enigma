@@ -43,5 +43,19 @@ namespace Enigma.Tests
 
             factory.CreateFromTemplate("invalidTemplateId");
         }
+
+        [TestMethod]
+        public void GenerateEnigmaTemplateSuccessfully()
+        {
+            string dir = Path.Combine(DATA_PATH, "enigma.xml");
+
+            Factory factory = new Factory(dir);
+
+            var GermanRailwayEnigma = factory.CreateFromTemplate("GermanRailway");
+
+            Assert.AreEqual("GermanRailway", GermanRailwayEnigma.Descriptor.Id);
+            Assert.AreEqual("German Railway (Rocket)", GermanRailwayEnigma.Descriptor.Name);
+            Assert.AreEqual(5, GermanRailwayEnigma.Rotors.Count);
+        }
     }
 }
