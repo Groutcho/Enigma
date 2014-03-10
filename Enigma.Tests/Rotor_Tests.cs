@@ -20,7 +20,7 @@ namespace Enigma.Tests
         [TestMethod]
         public void AlphabeticalRotorReturnsCorrectMapping()
         {
-            Rotor rotor = new Rotor(Rotor.RotorType.Alphabetical);
+            Rotor rotor = new Rotor(AlphabetUtils.AlphabetString, "rotor");
 
             foreach (char letter in AlphabetUtils.Alphabet)
             {
@@ -31,7 +31,7 @@ namespace Enigma.Tests
         [TestMethod]
         public void AlphabeticalRotorStepsCorrectly()
         {
-            Rotor rotor = new Rotor(Rotor.RotorType.Alphabetical);
+            Rotor rotor = new Rotor(AlphabetUtils.AlphabetString, "rotor");
 
             // Step one notch.
             rotor.SetRotorKey('B');

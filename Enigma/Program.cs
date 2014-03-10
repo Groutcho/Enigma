@@ -11,11 +11,10 @@ namespace Enigma
     {
         static void Main(string[] args)
         {
-            Rotor rotor = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            Rotor deflector = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            deflector.IsReflector = true;
+            Rotor rotor = new Rotor(AlphabetUtils.ReverseAlphabetString, "rotor");
+            Rotor reflector = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
-            EnigmaDevice device = new EnigmaDevice(new Rotor[] { rotor, deflector });
+            EnigmaDevice device = new EnigmaDevice(new Rotor[] { rotor, reflector });
             UserInterface userInterface = new UserInterface(device);
 
             while (true)

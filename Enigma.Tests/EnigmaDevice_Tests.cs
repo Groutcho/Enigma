@@ -33,10 +33,10 @@ namespace Enigma.Tests
         {
             Rotor[] rotors = new Rotor[4];
 
-            rotors[0] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[2] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[3] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
+            rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
+            rotors[1] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
+            rotors[2] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
+            rotors[3] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
             rotors[3].IsReflector = true;
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
@@ -67,7 +67,7 @@ namespace Enigma.Tests
 
             Rotor[] rotors = new Rotor[1];
 
-            rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
+            rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 
@@ -99,9 +99,8 @@ namespace Enigma.Tests
 
             Rotor[] rotors = new Rotor[2];
 
-            rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
-            rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[1].IsReflector = true;
+            rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
+            rotors[1] = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 
@@ -118,10 +117,8 @@ namespace Enigma.Tests
             const string TextToEncrypt = "HELLO";
 
             Rotor[] rotors = new Rotor[2];
-
-            rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
-            rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[1].IsReflector = true;
+            rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
+            rotors[1] = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 

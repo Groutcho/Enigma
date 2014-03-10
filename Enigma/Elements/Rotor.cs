@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Enigma.Exceptions;
+using System;
 using System.Text;
 
 namespace Enigma.Elements
@@ -17,13 +18,14 @@ namespace Enigma.Elements
     /// </summary>
     public class Rotor
     {
-        public enum RotorType { Alphabetical, ReverseAlphabetical, TypeI };
+        public enum RotorType { Stator, Rotor, Reflector }
 
         private int length;
         private Connection[] mapping;
         private Connection[] initialMapping;
-        private RotorType type;
+        private RotorType type = RotorType.Rotor;
         private int offset;
+        private RotorDescriptor descriptor;
 
         /// <summary>
         /// The rotation of the rotor. (In notches)
@@ -106,7 +108,7 @@ namespace Enigma.Elements
         public Rotor()
         {
             // Use the default rotor type.
-            type = RotorType.ReverseAlphabetical;
+            type = RotorType.Rotor;
 
             mapping = GenerateReverseAlphabeticalConnections(26);
             length = 26;
@@ -114,23 +116,82 @@ namespace Enigma.Elements
         }
 
         /// <summary>
-        /// Creates a rotor of type type.
+        /// Generates a rotor from a mapping input.
         /// </summary>
-        /// <param name="type">The type of the rotor. For more info, refer to http://en.wikipedia.org/wiki/Enigma_rotor_details </param>
-        public Rotor(RotorType type)
+        /// <param name="mapping">A rotor wiring such as "HQZGPJTMOBLNCIFDYAWVEUSRKX"</param>
+        /// <param name="type">The rotor's type (rotor, stator, reflector)</param>
+        public Rotor(string mapping, string type)
         {
-            if (type == RotorType.Alphabetical)
+            this.mapping = GenerateFromMapping(mapping);
+            this.initialMapping = this.mapping;
+
+            this.length = this.mapping.Length;
+
+            switch (type)
             {
-                mapping = GenerateAlphabeticalRotor(26);
-                length = 26;
+                case "rotor": this.type = RotorType.Rotor;
+                    break;
+
+                case "stator": this.type = RotorType.Stator;
+                    break;
+
+                case "reflector": this.type = RotorType.Reflector;
+                    break;
+
+                default: throw new RotorTypeException(string.Format("The type {0} is not a valid rotor type", type));
             }
-            else if (type == RotorType.ReverseAlphabetical)
+        }
+
+        public Rotor(RotorDescriptor descriptor)
+        {
+            this.descriptor = descriptor;
+
+            this.mapping = GenerateFromMapping(descriptor.Mapping);
+            this.initialMapping = this.mapping;
+
+            this.length = this.mapping.Length;
+
+            switch (descriptor.Type)
             {
-                mapping = GenerateReverseAlphabeticalConnections(26);
-                length = 26;
+                case "rotor": this.type = RotorType.Rotor;
+                    break;
+
+                case "stator": this.type = RotorType.Stator;
+                    break;
+
+                case "reflector": this.type = RotorType.Reflector;
+                    break;
+
+                default: throw new RotorTypeException(string.Format("The type {0} is not a valid rotor type", type));
+            }
+        }        
+
+        /// <summary>
+        /// Generate an array of connection from the mapping input.
+        /// </summary>
+        /// <param name="mapping">A rotor wiring such as "HQZGPJTMOBLNCIFDYAWVEUSRKX"</param>
+        /// <returns>An array of connections</returns>
+        private Connection[] GenerateFromMapping(string mapping)
+        {
+            bool valid = AlphabetUtils.Instance.IsValidMapping(mapping);
+
+            if (valid)
+            {
+                Connection[] result = new Connection[mapping.Length];
+
+                // Maps the regular alphabet order (ABCDEF...) to the input mapping.
+                for (int i = 0; i < mapping.Length; i++)
+                {
+                    result[i] = new Connection(AlphabetUtils.Alphabet[i], mapping[i]);
+                }
+
+                return result;
             }
 
-            this.initialMapping = mapping;
+            else
+            {
+                throw new InvalidMappingException(string.Format("{0} is not a valid mapping", mapping));
+            }
         }
 
         /// <summary>

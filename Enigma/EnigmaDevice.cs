@@ -56,7 +56,7 @@ namespace Enigma
                 lastIndex = currentRotor.GetValueFromKey(lastIndex, reversed);
 
                 // Make the current go back to the previous rotors.
-                if (currentRotor.IsReflector)
+                if (currentRotor.Type == Rotor.RotorType.Reflector)
                 {
                     offset *= -1;
                     reversed = !reversed;
