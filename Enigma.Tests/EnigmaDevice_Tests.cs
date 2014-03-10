@@ -37,7 +37,7 @@ namespace Enigma.Tests
             rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
             rotors[2] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
             rotors[3] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[3].IsDeflector = true;
+            rotors[3].IsReflector = true;
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
             Assert.AreEqual(4, enigma.Rotors.Count);
@@ -101,7 +101,7 @@ namespace Enigma.Tests
 
             rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
             rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[1].IsDeflector = true;
+            rotors[1].IsReflector = true;
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 
@@ -121,7 +121,7 @@ namespace Enigma.Tests
 
             rotors[0] = new Rotor(Rotor.RotorType.Alphabetical);
             rotors[1] = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            rotors[1].IsDeflector = true;
+            rotors[1].IsReflector = true;
 
             EnigmaDevice enigma = new EnigmaDevice(rotors);
 

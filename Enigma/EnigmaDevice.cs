@@ -41,13 +41,14 @@ namespace Enigma
         public char PressKey(char key)
         {
             char lastLetter = key;
-            int lastIndex = alphabet[lastLetter];
+            int lastIndex = AlphabetUtils.Instance[lastLetter];
             bool endOfCircuit = false;
             bool reversed = false;
             int currentRotorIndex = 0;
             Rotor currentRotor;
             int offset = 1;
 
+            // The current flows through each drum and permutes the input.
             while (!endOfCircuit)
             {
                 currentRotor = rotors[currentRotorIndex];
@@ -55,7 +56,7 @@ namespace Enigma
                 lastIndex = currentRotor.GetValueFromKey(lastIndex, reversed);
 
                 // Make the current go back to the previous rotors.
-                if (currentRotor.IsDeflector)
+                if (currentRotor.IsReflector)
                 {
                     offset *= -1;
                     reversed = !reversed;
@@ -64,24 +65,27 @@ namespace Enigma
                 // Increment or decrement the current rotor.
                 currentRotorIndex += offset;
 
-                // End of circuit reached.
+                // End of circuit reached when the current hits the last rotor.
                 if (currentRotorIndex == rotors.Count || currentRotorIndex < 0)
                 {
                     endOfCircuit = true;
                 }
             }
 
-            return alphabet[lastIndex];
+            return AlphabetUtils.Instance[lastIndex];
         }
 
-        public enum OutputFormatting { Concatenate, HistoricalWW2 }
+        /// <summary>
+        /// Used to format the output of the Enigma. Original does nothing.
+        /// </summary>
+        public enum OutputFormatting { Original, FiveLettersBlock, FourLettersBlock }
 
         /// <summary>
         /// Submits a text to the Enigma and get the encrypted result.
         /// </summary>
         /// <param name="input">The desired text.</param>
         /// <returns>The encrypted result</returns>
-        public string SubmitString(string input, OutputFormatting formatting = OutputFormatting.Concatenate)
+        public string SubmitString(string input, OutputFormatting formatting = OutputFormatting.Original)
         {
             if (input == null)
             {
@@ -93,6 +97,10 @@ namespace Enigma
                 return string.Empty;
             }
 
+            // Historical enigma only wrote upper case text.
+            input = input.ToUpperInvariant();
+
+            // And did not accept anything else than the 26 upper case letters of the roman alphabet.
             input = input.Replace(" ", "");
 
             StringBuilder sb = new StringBuilder();
@@ -104,22 +112,45 @@ namespace Enigma
 
             string result = sb.ToString();
 
-            result = FormatOutput(result, formatting);          
+            // The cryptographers also formatted the output in 4 or 5 letters blocks.
+            result = FormatOutput(result, formatting);
 
             return result;
         }
 
-        private static string FormatOutput(string result, OutputFormatting formatting)
+        /// <summary>
+        /// Format the Enigma's output according to a formatting scheme.
+        /// The historical german formatting was 5 letters block for the army and air force, and 4
+        /// letters block for the Navy.
+        /// </summary>
+        /// <param name="input">The string to format</param>
+        /// <param name="formatting">The formatting scheme</param>
+        /// <returns>The formatted string</returns>
+        private static string FormatOutput(string input, OutputFormatting formatting)
         {
-            if (formatting == OutputFormatting.HistoricalWW2)
+            int blockLength;
+
+            switch (formatting)
             {
-                for (int i = 0; i < result.Length; i += 6)
+                case OutputFormatting.Original: blockLength = -1;
+                    break;
+                case OutputFormatting.FiveLettersBlock: blockLength = 6;
+                    break;
+                case OutputFormatting.FourLettersBlock: blockLength = 5;
+                    break;
+                default: blockLength = -1;
+                    break;
+            }
+
+            if (blockLength > 0)
+            {
+                for (int i = 0; i < input.Length; i += blockLength)
                 {
-                    result = result.Insert(i, " ");
+                    input = input.Insert(i, " ");
                 }
             }
 
-            return result;
+            return input;
         }
 
         /// <summary>
@@ -128,8 +159,11 @@ namespace Enigma
         /// The key "ABC" means that the first rotor must be set with the "A" letter in front of the notch.
         /// The second rotor must be set with the "B" letter in front of the notch, and the third rotor must be set 
         /// with the "C" letter in front of the notch.
+        /// 
+        /// Note that if one rotor is a stator (Always the first one in historical models), it will not move, hence it will not be part of the key.
+        /// If there are 4 rotors and one stator, the key will be 4 letters long.  The reflector can move in some version, so it counts as a rotor.
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">The key must be only english alphabet letters</param>
         public void SetEncryptionKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key))

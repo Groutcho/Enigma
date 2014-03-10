@@ -36,7 +36,7 @@ namespace Enigma
 
             string text = Console.ReadLine();
             
-            Console.WriteLine(string.Format("THE ENCRYPTED TEXT IS : {0}", device.SubmitString(text, EnigmaDevice.OutputFormatting.HistoricalWW2)));
+            Console.WriteLine(string.Format("THE ENCRYPTED TEXT IS : {0}", device.SubmitString(text, EnigmaDevice.OutputFormatting.FiveLettersBlock)));
         }
     }
 }

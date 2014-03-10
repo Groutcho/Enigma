@@ -13,7 +13,7 @@ namespace Enigma
         {
             Rotor rotor = new Rotor(Rotor.RotorType.ReverseAlphabetical);
             Rotor deflector = new Rotor(Rotor.RotorType.ReverseAlphabetical);
-            deflector.IsDeflector = true;
+            deflector.IsReflector = true;
 
             EnigmaDevice device = new EnigmaDevice(new Rotor[] { rotor, deflector });
             UserInterface userInterface = new UserInterface(device);

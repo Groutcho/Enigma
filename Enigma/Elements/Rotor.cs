@@ -7,18 +7,21 @@ namespace Enigma.Elements
     /// A modelisation of an Enigma rotor.
     /// Rotors were cylinders whose each side were made of 26 electrically connected dots, one for each letter.
     /// On one side, the current entered a dot, then exited through another dot on the opposite side.
-    /// The mapping from dot to dot was the rotor's encryption key.
+    /// The wiring from dot to dot was the rotor's encryption key.
     /// 
-    /// Deflectors were special rotors with electrical connections on only one side. 
-    /// Their role was to send the electrical current back into the previous rotor.
+    /// Example of historical wiring : UQNTLSZFMREHDPXKIBVYGJCWOA
+    /// 
+    /// Reflectors were special rotors with electrical connections on only one side.
+    /// Their role was to send the electrical current back into the previous rotor and ensures the bijective property of the device.
+    /// That is, X -> Y, and Y -> X
     /// </summary>
     public class Rotor
     {
         public enum RotorType { Alphabetical, ReverseAlphabetical, TypeI };
 
         private int length;
-        private Connection[] rotor;
-        private Connection[] initialRotor;
+        private Connection[] mapping;
+        private Connection[] initialMapping;
         private RotorType type;
         private int offset;
 
@@ -30,10 +33,10 @@ namespace Enigma.Elements
         public int Offset { get { return offset; } }
 
         /// <summary>
-        /// Deflectors are special rotors that send the electric 
-        /// current back to the previous rotor, transforming the x + 1 rotors in x*2 + 1.
+        /// Reflectors are special rotors that send the electric 
+        /// current back to the previous rotor, ensuring the bijective property of the rotor.
         /// </summary>
-        public bool IsDeflector { get; set; }
+        public bool IsReflector { get; set; }
 
         public RotorType Type { get { return type; } }
 
@@ -41,10 +44,11 @@ namespace Enigma.Elements
 
         /// <summary>
         /// Resets the rotor to its original position (The "A" position)
+        /// Same as setting the rotor key to "A"
         /// </summary>
         public void Reset()
         {
-            rotor = initialRotor;
+            mapping = initialMapping;
             offset = 0;
         }
 
@@ -85,17 +89,17 @@ namespace Enigma.Elements
 
             for (int i = 0; i < length; i++)
             {
-                incrementedRotor[i] = initialRotor[(i + offset) % length];
+                incrementedRotor[i] = initialMapping[(i + offset) % length];
             }
 
             this.offset = offset;
-            rotor = incrementedRotor;
+            mapping = incrementedRotor;
         }
 
         public Rotor(Connection[] connections)
         {
-            this.rotor = connections;
-            this.initialRotor = connections;
+            this.mapping = connections;
+            this.initialMapping = connections;
             this.length = connections.Length;
         }
 
@@ -104,9 +108,9 @@ namespace Enigma.Elements
             // Use the default rotor type.
             type = RotorType.ReverseAlphabetical;
 
-            rotor = GenerateReverseAlphabeticalConnections(26);
+            mapping = GenerateReverseAlphabeticalConnections(26);
             length = 26;
-            this.initialRotor = rotor;
+            this.initialMapping = mapping;
         }
 
         /// <summary>
@@ -117,16 +121,16 @@ namespace Enigma.Elements
         {
             if (type == RotorType.Alphabetical)
             {
-                rotor = GenerateAlphabeticalRotor(26);
+                mapping = GenerateAlphabeticalRotor(26);
                 length = 26;
             }
             else if (type == RotorType.ReverseAlphabetical)
             {
-                rotor = GenerateReverseAlphabeticalConnections(26);
+                mapping = GenerateReverseAlphabeticalConnections(26);
                 length = 26;
             }
 
-            this.initialRotor = rotor;
+            this.initialMapping = mapping;
         }
 
         /// <summary>
@@ -175,25 +179,17 @@ namespace Enigma.Elements
         }
 
         /// <summary>
-        /// 
+        /// Gets the mapped value for the input key.
         /// </summary>
         /// <param name="key">The entry point</param>
         /// <param name="reverse">If the electric current is flowing from the right to left.</param>
         /// <returns>The mapped exit point</returns>
         public int GetValueFromKey(int key, bool reverse)
         {
-            //if (IsDeflector)
-            //{
-            //    reverse = false;
-            //    key = key % length;
-            //}
-            //else
-            //{
-                key = (key + offset) % length;
-            //}
+            key = (key + offset) % length;
             int result = -1;
 
-            foreach (Connection connection in rotor)
+            foreach (Connection connection in mapping)
             {
                 if (reverse)
                 {
@@ -224,16 +220,16 @@ namespace Enigma.Elements
         }
 
         /// <summary>
-        /// Returns an array of letters according to the mapping of the rotor.
+        /// Returns the rotor's wiring as an array of letter.
         /// </summary>
         /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < rotor.Length; i++)
+            for (int i = 0; i < mapping.Length; i++)
             {
-                sb.Append(AlphabetUtils.Instance[rotor[i].End]);
+                sb.Append(AlphabetUtils.Instance[mapping[i].End]);
             }
 
             return sb.ToString();
