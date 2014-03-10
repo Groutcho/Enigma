@@ -88,5 +88,48 @@ namespace Enigma.Elements
 
             throw new ArgumentOutOfRangeException();
         }
+
+        /// <summary>
+        /// A mapping is considered valid if :
+        /// 1. It is made only of the 26 letters of the english alphabet (uppercase)
+        /// 2. Each letter is present exactly once
+        /// </summary>
+        /// <param name="mapping"></param>
+        /// <returns>True if mapping is valid, false otherwise</returns>
+        internal bool IsValidMapping(string mapping)
+        {
+            if (string.IsNullOrWhiteSpace(mapping))
+            {
+                return false;
+            }
+
+            if (mapping.Length != 26)
+            {
+                return false;
+            }
+
+            string upperCase = mapping.ToUpperInvariant();
+
+            for (int i = 0; i < upperCase.Length; i++)
+            {
+                bool found = false;
+
+                for (int j = 0; j < upperCase.Length; j++)
+                {
+                    if (Alphabet[j] == upperCase[i])
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }
