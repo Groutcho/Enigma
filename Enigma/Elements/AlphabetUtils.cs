@@ -52,7 +52,7 @@ namespace Enigma.Elements
 
             T buffer;
 
-            for (int i = input.Length -1; i > 0; i--)
+            for (int i = input.Length - 1; i > 0; i--)
             {
                 int j = random.Next(0, i);
                 buffer = input[j];
@@ -86,7 +86,7 @@ namespace Enigma.Elements
                 }
             }
 
-            throw new ArgumentOutOfRangeException();
+            throw new ArgumentOutOfRangeException(string.Format("The letter {0} is not a valid letter"));
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace Enigma.Elements
         /// </summary>
         /// <param name="mapping"></param>
         /// <returns>True if mapping is valid, false otherwise</returns>
-        internal bool IsValidMapping(string mapping)
+        public static bool IsValidMapping(string mapping)
         {
             if (string.IsNullOrWhiteSpace(mapping))
             {
@@ -108,28 +108,25 @@ namespace Enigma.Elements
                 return false;
             }
 
-            string upperCase = mapping.ToUpperInvariant();
+            // Get the sum of all letters in Unicode
 
-            for (int i = 0; i < upperCase.Length; i++)
+            // The correct sum.
+            int expectedSum = 0;
+
+            for (int i = 0; i < AlphabetUtils.Alphabet.Length; i++)
             {
-                bool found = false;
-
-                for (int j = 0; j < upperCase.Length; j++)
-                {
-                    if (Alphabet[j] == upperCase[i])
-                    {
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    return false;
-                }
+                expectedSum += (int)AlphabetUtils.Alphabet[i];
             }
 
-            return true;
+            // The actual sum of the input.
+            int actualSum = 0;
+
+            for (int i = 0; i < mapping.Length; i++)
+            {
+                actualSum += (int)mapping[i];
+            }
+
+            return actualSum == expectedSum;
         }
     }
 }
