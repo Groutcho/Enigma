@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma.Exceptions
+namespace Cryptography.Exceptions
 {
     public class EnigmaTemplateNotFoundException : Exception
     {

@@ -1,8 +1,8 @@
-﻿using Enigma.Exceptions;
+﻿using Cryptography.Exceptions;
 using System;
 using System.Text;
 
-namespace Enigma.Elements
+namespace Cryptography.Elements
 {
     /// <summary>
     /// A modelisation of an Enigma rotor.

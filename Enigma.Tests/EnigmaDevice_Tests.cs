@@ -1,9 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Enigma.Elements;
+using Cryptography.Elements;
 using System.Collections.Generic;
+using System.IO;
 
-namespace Enigma.Tests
+namespace Cryptography.Tests
 {
     [TestClass]
     public class EnigmaDevice_Tests
@@ -12,7 +13,7 @@ namespace Enigma.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullArgumentConstructor()
         {
-            EnigmaDevice enigma = new EnigmaDevice(null);
+            Enigma enigma = new Enigma(null);
         }
 
         [TestMethod]
@@ -25,7 +26,7 @@ namespace Enigma.Tests
             rotors[1] = new Rotor();
             rotors[2] = new Rotor();
 
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+            Enigma enigma = new Enigma(rotors);
         }
 
         [TestMethod]
@@ -39,7 +40,7 @@ namespace Enigma.Tests
             rotors[3] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
             rotors[3].IsReflector = true;
 
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+            Enigma enigma = new Enigma(rotors);
             Assert.AreEqual(4, enigma.Rotors.Count);
         }
 
@@ -49,8 +50,8 @@ namespace Enigma.Tests
             Rotor[] rotors = new Rotor[1];
 
             rotors[0] = new Rotor();
-            
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+
+            Enigma enigma = new Enigma(rotors);
 
             Assert.AreEqual('Z', enigma.PressKey('A'));
             Assert.AreEqual('Y', enigma.PressKey('B'));
@@ -69,7 +70,7 @@ namespace Enigma.Tests
 
             rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
 
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+            Enigma enigma = new Enigma(rotors);
 
             enigma.SetEncryptionKey("A");
             Assert.AreEqual(AlphabetUtils.AlphabetString, enigma.SubmitString(AlphabetUtils.AlphabetString));
@@ -95,38 +96,72 @@ namespace Enigma.Tests
         [TestMethod]
         public void SetEncryptionKeyReturnsCorrectTextForOneRotorAndOneDeflectorAndOneLetterInput()
         {
-            const string TextToEncrypt = "A";
+            const string plaintext = "A";
 
             Rotor[] rotors = new Rotor[2];
 
             rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
             rotors[1] = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+            Enigma enigma = new Enigma(rotors);
 
             enigma.SetEncryptionKey("BB");
 
-            string encryptedText = enigma.SubmitString(TextToEncrypt);
+            string ciphertext = enigma.SubmitString(plaintext);
 
-            Assert.AreEqual(TextToEncrypt, enigma.SubmitString(encryptedText));
+            Assert.AreEqual(plaintext, enigma.SubmitString(ciphertext), "Encryption symmetry is not ensured.");
         }
 
         [TestMethod]
-        public void SetEncryptionKeyReturnsCorrectTextForOneRotorAndOneDeflector()
+        public void SymmetryIsEnsuredWithOneFixedRotorAndReflector()
         {
-            const string TextToEncrypt = "HELLO";
+            const string plaintext = "HELLO";
 
             Rotor[] rotors = new Rotor[2];
             rotors[0] = new Rotor(AlphabetUtils.AlphabetString, "rotor");
             rotors[1] = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
-            EnigmaDevice enigma = new EnigmaDevice(rotors);
+            Enigma enigma = new Enigma(rotors);
 
             enigma.SetEncryptionKey("BB");
 
-            string encryptedText = enigma.SubmitString(TextToEncrypt);
+            string ciphertext = enigma.SubmitString(plaintext);
 
-            Assert.AreEqual(TextToEncrypt, enigma.SubmitString(encryptedText));
+            Assert.AreEqual(plaintext, enigma.SubmitString(ciphertext), "Encryption symmetry is not ensured.");
+        }
+
+        private const string DATA_PATH = "F:/Developpement/C#/Studies/Enigma/Enigma/Data";
+
+        [TestMethod]
+        public void SymmetryIsEnsuredWithAnyPresetAndZeroKey()
+        {
+            string dir = Path.Combine(DATA_PATH, "enigma.xml");
+            Factory factory = new Factory(dir);
+            Enigma enigma = factory.CreateFromTemplate("GermanRailway");
+
+            enigma.SetEncryptionKey("AAAAA");
+
+            const string plaintext = "HELLOMYNAMEISJOHN";
+
+            string ciphertext = enigma.SubmitString(plaintext, Enigma.OutputFormatting.Original);
+
+            Assert.AreEqual(plaintext, enigma.SubmitString(ciphertext, Enigma.OutputFormatting.Original), "Encryption symmetry is not ensured.");
+        }
+
+        [TestMethod]
+        public void SymmetryIsEnsuredWithAnyPresetAndAnyKey()
+        {
+            string dir = Path.Combine(DATA_PATH, "enigma.xml");
+            Factory factory = new Factory(dir);
+            Enigma enigma = factory.CreateFromTemplate("GermanRailway");
+
+            enigma.SetEncryptionKey("ZQRXO");
+
+            const string plaintext = "HELLOMYNAMEISJOHN";
+
+            string ciphertext = enigma.SubmitString(plaintext, Enigma.OutputFormatting.Original);
+
+            Assert.AreEqual(plaintext, enigma.SubmitString(ciphertext, Enigma.OutputFormatting.Original), "Encryption symmetry is not ensured.");
         }
     }
 }

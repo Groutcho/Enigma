@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Enigma.Elements;
+using Cryptography.Elements;
 
-namespace Enigma.Tests
+namespace Cryptography.Tests
 {
     [TestClass]
     public class Rotor_Tests

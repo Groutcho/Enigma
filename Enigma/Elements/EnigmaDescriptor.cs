@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma.Elements
+namespace Cryptography.Elements
 {
     /// <summary>
     /// Metadata of the enigma. Historical description, dates...

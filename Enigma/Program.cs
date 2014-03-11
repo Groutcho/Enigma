@@ -1,4 +1,4 @@
-﻿using Enigma.Elements;
+﻿using Cryptography.Elements;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma
+namespace Cryptography
 {
     class Program
     {
@@ -15,7 +15,7 @@ namespace Enigma
             Rotor rotor = new Rotor(AlphabetUtils.ReverseAlphabetString, "rotor");
             Rotor reflector = new Rotor(AlphabetUtils.ReverseAlphabetString, "reflector");
 
-            EnigmaDevice device = new EnigmaDevice(new Rotor[] { rotor, reflector });
+            Enigma device = new Enigma(new Rotor[] { rotor, reflector });
 
             const string DATA_PATH = "F:/Developpement/C#/Studies/Enigma/Enigma/Data";
             string dir = Path.Combine(DATA_PATH, "enigma.xml");
@@ -24,7 +24,7 @@ namespace Enigma
 
             UserInterface userInterface = new UserInterface(factory);
 
-            EnigmaDevice choice = userInterface.RequestEnigmaTemplateChoice(factory);
+            Enigma choice = userInterface.RequestEnigmaTemplateChoice(factory);
 
             userInterface.SetDevice(choice);
 

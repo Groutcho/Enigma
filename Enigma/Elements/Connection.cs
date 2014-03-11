@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma.Elements
+namespace Cryptography.Elements
 {
     /// <summary>
     /// In the Enigma, the rotors were made of 26 electrical connections that mapped a letter X to another Y.

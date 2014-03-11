@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma
+namespace Cryptography
 {
     class UserInterface
     {
         Factory factory;
-        EnigmaDevice device;
+        Enigma device;
 
         public UserInterface(Factory factory)
         {
@@ -21,12 +21,12 @@ namespace Enigma
             this.factory = factory;
         }
 
-        public void SetDevice(EnigmaDevice device)
+        public void SetDevice(Enigma device)
         {
             this.device = device;
         }
 
-        public EnigmaDevice RequestEnigmaTemplateChoice(Factory factory)
+        public Enigma RequestEnigmaTemplateChoice(Factory factory)
         {
             Console.WriteLine("CHOOSE MODEL :");
 
@@ -66,7 +66,7 @@ namespace Enigma
 
             string text = Console.ReadLine();
             
-            Console.WriteLine(string.Format("THE ENCRYPTED TEXT IS : {0}", device.SubmitString(text, EnigmaDevice.OutputFormatting.FiveLettersBlock)));
+            Console.WriteLine(string.Format("THE ENCRYPTED TEXT IS : {0}", device.SubmitString(text, Enigma.OutputFormatting.FiveLettersBlock)));
         }
     }
 }

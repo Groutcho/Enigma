@@ -1,5 +1,5 @@
-﻿using Enigma.Elements;
-using Enigma.Exceptions;
+﻿using Cryptography.Elements;
+using Cryptography.Exceptions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace Enigma
+namespace Cryptography
 {
     /// <summary>
     /// Class factory to create variants of the Enigma
@@ -16,9 +16,9 @@ namespace Enigma
     public class Factory
     {
         Dictionary<string, Rotor> rotorModels = new Dictionary<string, Rotor>();
-        Dictionary<string, EnigmaDevice> enigmaModels = new Dictionary<string, EnigmaDevice>();
+        Dictionary<string, Enigma> enigmaModels = new Dictionary<string, Enigma>();
 
-        public Dictionary<string, EnigmaDevice> EnigmaModels { get { return enigmaModels; } }
+        public Dictionary<string, Enigma> EnigmaModels { get { return enigmaModels; } }
 
         public Factory(string uri)
         {
@@ -55,7 +55,7 @@ namespace Enigma
             }            
         }
 
-        private IEnumerable<EnigmaDevice> GetEnigmaPresets(XDocument doc)
+        private IEnumerable<Enigma> GetEnigmaPresets(XDocument doc)
         {
             IEnumerable<XElement> enigmaCollection;
 
@@ -78,13 +78,13 @@ namespace Enigma
                                        Rotors = from  rotor in enigma.Element("rotors").Elements("rotor") select rotor.Value
                                    };
 
-            List<EnigmaDevice> result = new List<EnigmaDevice>(enigmaDescriptors.Count());
+            List<Enigma> result = new List<Enigma>(enigmaDescriptors.Count());
 
             foreach (var descriptor in enigmaDescriptors)
             {
                 var rotors = from rotor in descriptor.Rotors select rotorModels[rotor];
 
-                EnigmaDevice device = new EnigmaDevice(rotors, descriptor);
+                Enigma device = new Enigma(rotors, descriptor);
 
                 result.Add(device);
             }
@@ -129,7 +129,7 @@ namespace Enigma
             return result;
         }
 
-        public EnigmaDevice CreateFromTemplate(string templateId)
+        public Enigma CreateFromTemplate(string templateId)
         {
             if (enigmaModels.ContainsKey(templateId))
             {

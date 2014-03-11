@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Enigma.Elements
+namespace Cryptography.Elements
 {
     public class RotorTypeException : Exception
     {

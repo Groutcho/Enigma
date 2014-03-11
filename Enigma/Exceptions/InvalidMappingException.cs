@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Enigma.Exceptions
+namespace Cryptography.Exceptions
 {
     public class InvalidMappingException : Exception
     {

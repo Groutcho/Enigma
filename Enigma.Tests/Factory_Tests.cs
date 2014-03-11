@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using Enigma.Exceptions;
+using Cryptography.Exceptions;
 
-namespace Enigma.Tests
+namespace Cryptography.Tests
 {
     [TestClass]
     public class Factory_Tests

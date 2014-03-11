@@ -1,13 +1,13 @@
-﻿using Enigma.Elements;
+﻿using Cryptography.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Enigma
+namespace Cryptography
 {
-    public class EnigmaDevice
+    public class Enigma
     {
         AlphabetUtils alphabet = new AlphabetUtils();
 
@@ -21,7 +21,7 @@ namespace Enigma
         /// Creates an enigma from a list of rotor.
         /// </summary>
         /// <param name="rotors"></param>
-        public EnigmaDevice(IEnumerable<Rotor> rotors)
+        public Enigma(IEnumerable<Rotor> rotors)
         {
             if (rotors == null)
             {
@@ -39,7 +39,7 @@ namespace Enigma
             }
         }
 
-        public EnigmaDevice(IEnumerable<Rotor> rotors, EnigmaDescriptor descriptor)
+        public Enigma(IEnumerable<Rotor> rotors, EnigmaDescriptor descriptor)
         {
             if (rotors == null)
             {
@@ -75,7 +75,7 @@ namespace Enigma
             int offset = 1;
 
             // The current flows through each drum and permutes the input.
-            while (!endOfCircuit)
+           while (!endOfCircuit)
             {
                 currentRotor = rotors[currentRotorIndex];
 
@@ -187,7 +187,7 @@ namespace Enigma
         /// with the "C" letter in front of the notch.
         /// 
         /// Note that if one rotor is a stator (Always the first one in historical models), it will not move, hence it will not be part of the key.
-        /// If there are 4 rotors and one stator, the key will be 4 letters long.  The reflector can move in some version, so it counts as a rotor.
+        /// If there are 4 rotors and one stator, the key will be 4 letters long.  The reflector can move in some versions, so it counts as a rotor.
         /// </summary>
         /// <param name="key">The key must be only english alphabet letters</param>
         public void SetEncryptionKey(string key)
@@ -199,7 +199,7 @@ namespace Enigma
 
             if (key.Length != rotors.Count)
             {
-                throw new ArgumentException("The encryption key must contain as many letters as there are rotors in the device.");
+                throw new ArgumentException("The encryption key must contain as many letters as there are actual rotors in the device.");
             }
 
             for (int i = 0; i < key.Length; i++)
