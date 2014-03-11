@@ -18,11 +18,17 @@ namespace Enigma
         Dictionary<string, Rotor> rotorModels = new Dictionary<string, Rotor>();
         Dictionary<string, EnigmaDevice> enigmaModels = new Dictionary<string, EnigmaDevice>();
 
+        public Dictionary<string, EnigmaDevice> EnigmaModels { get { return enigmaModels; } }
+
         public Factory(string uri)
         {
             DeserializeDataFile(uri);
         }
 
+        /// <summary>
+        /// Deserializes an xml file containing all models of rotors and Enigma presets.
+        /// </summary>
+        /// <param name="uri">A valid URI</param>
         private void DeserializeDataFile(string uri)
         {
             try

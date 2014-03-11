@@ -208,9 +208,7 @@
   <presets>
     <device name="German Railway (Rocket)">
       <id>GermanRailway</id>
-      <description>From 7 February 1941 the Government Code and Cipher School (GC &amp; CS) decrypted
-        what they believed to be a new variant of the Enigma traffic, introduced by the
-        Germans on 23 January.</description>
+      <description>From 7 February 1941 the Government Code and Cipher School (GC &amp; CS) decrypted what they believed to be a new variant of the Enigma traffic, introduced by the Germans on 23 January.</description>
       <rotors>
         <rotor>ETWRocket</rotor>
         <rotor>IRocket</rotor>
