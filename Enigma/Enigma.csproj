@@ -7,7 +7,7 @@
     <ProjectGuid>{D56EE6D6-22A9-4F45-9696-63141596CA2B}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Enigma</RootNamespace>
+    <RootNamespace>Cryptography</RootNamespace>
     <AssemblyName>Enigma</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -50,7 +50,7 @@
     <Compile Include="Exceptions\RotorTypeException.cs" />
     <Compile Include="Exceptions\InvalidMappingException.cs" />
     <Compile Include="Elements\Rotor.cs" />
-    <Compile Include="EnigmaDevice.cs" />
+    <Compile Include="Enigma.cs" />
     <Compile Include="Factory\Factory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
