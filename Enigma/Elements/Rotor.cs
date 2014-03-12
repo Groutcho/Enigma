@@ -135,6 +135,16 @@ namespace Cryptography.Elements
             }
         }
 
+        public Rotor(string mapping, RotorType type, bool ignoreInvalidMapping = false)
+        {
+            this.mapping = GenerateConnectionsFromMapping(mapping, ignoreInvalidMapping);
+            this.initialMapping = this.mapping;
+
+            this.length = this.mapping.Length;
+
+            this.type = type;
+        }
+
         public Rotor(RotorDescriptor descriptor)
         {
             this.Descriptor = descriptor;
@@ -164,11 +174,11 @@ namespace Cryptography.Elements
         /// </summary>
         /// <param name="mapping">A rotor wiring such as "HQZGPJTMOBLNCIFDYAWVEUSRKX"</param>
         /// <returns>An array of connections</returns>
-        private Connection[] GenerateConnectionsFromMapping(string mapping)
+        private Connection[] GenerateConnectionsFromMapping(string mapping, bool ignoreInvalidMapping = false)
         {
             bool valid = AlphabetUtils.IsValidMapping(mapping);
 
-            if (valid)
+            if (valid || ignoreInvalidMapping)
             {
                 Connection[] result = new Connection[mapping.Length];
 
@@ -271,6 +281,16 @@ namespace Cryptography.Elements
             {
                 throw new ArgumentException(string.Format("The key {0} cannot be found in the rotor's connections.", key));
             }
+        }
+
+        public int GetOffsetFromKey(int key)
+        {
+            if (key > 25 || key < 0)
+            {
+                throw new ArgumentOutOfRangeException(string.Format("The key {0} is out of range. It must be between 0 and 25.", key));
+            }
+
+            return mapping[key].Offset;
         }
 
         /// <summary>

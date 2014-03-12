@@ -23,10 +23,13 @@ namespace Cryptography.Tests
         [TestMethod]
         public void IsValidMappingReturnsFalse()
         {
+            // Repetition of letters
             Assert.IsFalse(AlphabetUtils.IsValidMapping("FVPCIAOYEDRZXWGCTKUQSBNMHL"));
-            Assert.IsFalse(AlphabetUtils.IsValidMapping("FLPJIAOYEDRZXWGCTKUQSBNMHL"));
-            Assert.IsFalse(AlphabetUtils.IsValidMapping("FVPJIAOYYDRZXWGCTKUQSBNMHL"));
+
+            // 25 letters
             Assert.IsFalse(AlphabetUtils.IsValidMapping("FVPJIAOYERZXWGCTKUQSBNMHL"));
+
+            // Empty / null input
             Assert.IsFalse(AlphabetUtils.IsValidMapping(""));
             Assert.IsFalse(AlphabetUtils.IsValidMapping(null));
         }

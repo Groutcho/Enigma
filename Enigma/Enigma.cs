@@ -64,32 +64,46 @@ namespace Cryptography
         /// </summary>
         /// <param name="key">The letter typed on the Enigma's keyboard</param>
         /// <returns>The encrypted letter.</returns>
-        public char PressKey(char key)
+        /// <param name="permutations">Outputs a list of all permutations for this character.</param>
+        public char PressKey(char key, out List<int> permutations)
         {
             char lastLetter = key;
             int lastIndex = AlphabetUtils.Instance[lastLetter];
             bool endOfCircuit = false;
-            bool reversed = false;
             int currentRotorIndex = 0;
             Rotor currentRotor;
-            int offset = 1;
+            int increment = 1;
+            int lastOffset = 0;
+
+            permutations = new List<int>(10);
 
             // The current flows through each drum and permutes the input.
-           while (!endOfCircuit)
+            while (!endOfCircuit)
             {
                 currentRotor = rotors[currentRotorIndex];
 
-                lastIndex = currentRotor.GetValueFromKey(lastIndex, reversed);
+                lastOffset = currentRotor.GetOffsetFromKey(lastIndex);
+                lastIndex += lastOffset * increment;
+
+                if (lastIndex < 0)
+                {
+                    lastIndex = 26 + lastIndex;
+                }
+                else
+                {
+                    lastIndex = lastIndex % 26;
+                }
+
+                permutations.Add(lastOffset);
 
                 // Make the current go back to the previous rotors.
                 if (currentRotor.Type == Rotor.RotorType.Reflector)
                 {
-                    offset *= -1;
-                    reversed = !reversed;
+                    increment *= -1;
                 }
 
                 // Increment or decrement the current rotor.
-                currentRotorIndex += offset;
+                currentRotorIndex += increment;
 
                 // End of circuit reached when the current hits the last rotor.
                 if (currentRotorIndex == rotors.Count || currentRotorIndex < 0)
@@ -99,6 +113,17 @@ namespace Cryptography
             }
 
             return AlphabetUtils.Instance[lastIndex];
+        }
+
+        /// <summary>
+        /// Press a key on the Enigma's keyboard and get the encrypted result.
+        /// </summary>
+        /// <param name="key">The letter typed on the Enigma's keyboard</param>
+        /// <returns>The encrypted letter.</returns>
+        public char PressKey(char key)
+        {
+            List<int> permutations;
+            return PressKey(key, out permutations);
         }
 
         /// <summary>
@@ -197,14 +222,29 @@ namespace Cryptography
                 throw new ArgumentException("The encryption key must not be null, empty or contain whitespace.");
             }
 
-            if (key.Length != rotors.Count)
+            int rotatingRotors = 0;
+
+            foreach (Rotor rotor in rotors)
             {
-                throw new ArgumentException("The encryption key must contain as many letters as there are actual rotors in the device.");
+                if (rotor.Type != Rotor.RotorType.Stator)
+                {
+                    rotatingRotors++;
+                }
             }
 
-            for (int i = 0; i < key.Length; i++)
+            if (key.Length != rotatingRotors)
             {
-                rotors[i].SetRotorKey(key[i]);
+                throw new ArgumentException("The key must contain as many letters as rotors in the device.");
+            }
+
+            int k = 0;
+            foreach (Rotor rotor in rotors)
+            {
+                if (rotor.Type != Rotor.RotorType.Stator)
+                {
+                    rotor.SetRotorKey(key[0]);
+                    k++;
+                }
             }
         }
     }

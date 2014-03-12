@@ -3,3 +3,5 @@ Enigma.Tests/obj/
 Enigma/bin/
 Enigma/obj/
 *.suo
+packages/
+.nuget/packages.config

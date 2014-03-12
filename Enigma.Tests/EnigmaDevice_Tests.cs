@@ -64,7 +64,7 @@ namespace Cryptography.Tests
         [TestMethod]
         public void SetEncryptionKeyReturnsCorrectTextForOneRotor()
         {
-            const string TextToEncrypt = "HELLO";
+            const string plaintext = "HELLO";
 
             Rotor[] rotors = new Rotor[1];
 
@@ -75,22 +75,7 @@ namespace Cryptography.Tests
             enigma.SetEncryptionKey("A");
             Assert.AreEqual(AlphabetUtils.AlphabetString, enigma.SubmitString(AlphabetUtils.AlphabetString));
             Assert.AreEqual(AlphabetUtils.ReverseAlphabetString, enigma.SubmitString(AlphabetUtils.ReverseAlphabetString));
-            Assert.AreEqual(TextToEncrypt, enigma.SubmitString(TextToEncrypt));
-
-            //           E    H     L    O
-            // A -> ABCD E FG H IJK L MN O PQRSTUVWXYZ
-            // B -> BCDE F GH I JKL M NO P QRSTUVWXYZA
-            // H -> HIJK L MN O PQR S TU V WXYZABCDEFG
-            // Z -> ZABC D EF G HIJ K LM N OPQRSTUVWXY
-
-            enigma.SetEncryptionKey("B");
-            Assert.AreEqual("IFMMP", enigma.SubmitString(TextToEncrypt));
-
-            enigma.SetEncryptionKey("H");
-            Assert.AreEqual("OLSSV", enigma.SubmitString(TextToEncrypt));
-
-            enigma.SetEncryptionKey("Z");
-            Assert.AreEqual("GDKKN", enigma.SubmitString(TextToEncrypt));
+            Assert.AreEqual(plaintext, enigma.SubmitString(plaintext));
         }
 
         [TestMethod]
@@ -139,7 +124,7 @@ namespace Cryptography.Tests
             Factory factory = new Factory(dir);
             Enigma enigma = factory.CreateFromTemplate("GermanRailway");
 
-            enigma.SetEncryptionKey("AAAAA");
+            enigma.SetEncryptionKey("AAAA");
 
             const string plaintext = "HELLOMYNAMEISJOHN";
 
@@ -149,13 +134,60 @@ namespace Cryptography.Tests
         }
 
         [TestMethod]
+        public void Symmetry_Is_Ensured_With_Simplified_Model_Of_Four_Rotors()
+        {
+            List<Rotor> rotors = new List<Rotor>(4);
+
+            Rotor rotorA =      new Rotor("BBCAAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
+            Rotor rotorB =      new Rotor("DCCDAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
+            Rotor rotorC =      new Rotor("ABACAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
+            Rotor reflector =   new Rotor("CACDAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Reflector, ignoreInvalidMapping: true);
+
+            rotors.Add(rotorA);
+            rotors.Add(rotorB);
+            rotors.Add(rotorC);
+            rotors.Add(reflector);
+
+            Enigma enigma = new Enigma(rotors);
+
+            enigma.SetEncryptionKey("AAAA");
+
+            List<int> cipherpermutations;
+            List<int> plainpermutations;
+            char plainchar = 'A';
+            char cipherchar = enigma.PressKey(plainchar, out cipherpermutations);
+            char symmetricplainchar = enigma.PressKey(cipherchar, out plainpermutations);
+
+            Assert.AreEqual(symmetricplainchar, plainchar, "Encryption symmetry is not ensured.");
+        }
+
+        [TestMethod]
+        public void SymmetryIsEnsuredWithAnyPresetAndAnyKeyAndOneLetter()
+        {
+            string dir = Path.Combine(DATA_PATH, "enigma.xml");
+            Factory factory = new Factory(dir);
+            Enigma enigma = factory.CreateFromTemplate("GermanRailway");
+
+            enigma.SetEncryptionKey("QRXO");
+
+            List<int> cipherpermutations;
+            List<int> plainpermutations;
+            char plainchar = 'A';
+            char cipherchar = enigma.PressKey(plainchar, out cipherpermutations);
+            char symmetricplainchar = enigma.PressKey(cipherchar, out plainpermutations);
+
+            Assert.AreEqual(symmetricplainchar, plainchar, "Encryption symmetry is not ensured.");
+        }
+
+
+        [TestMethod]
         public void SymmetryIsEnsuredWithAnyPresetAndAnyKey()
         {
             string dir = Path.Combine(DATA_PATH, "enigma.xml");
             Factory factory = new Factory(dir);
             Enigma enigma = factory.CreateFromTemplate("GermanRailway");
 
-            enigma.SetEncryptionKey("ZQRXO");
+            enigma.SetEncryptionKey("QRXO");
 
             const string plaintext = "HELLOMYNAMEISJOHN";
 
