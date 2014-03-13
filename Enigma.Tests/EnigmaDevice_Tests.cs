@@ -134,34 +134,6 @@ namespace Cryptography.Tests
         }
 
         [TestMethod]
-        public void Symmetry_Is_Ensured_With_Simplified_Model_Of_Four_Rotors()
-        {
-            List<Rotor> rotors = new List<Rotor>(4);
-
-            Rotor rotorA =      new Rotor("BBCAAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
-            Rotor rotorB =      new Rotor("DCCDAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
-            Rotor rotorC =      new Rotor("ABACAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Rotor, ignoreInvalidMapping: true);
-            Rotor reflector =   new Rotor("CACDAAAAAAAAAAAAAAAAAAAAAA", Rotor.RotorType.Reflector, ignoreInvalidMapping: true);
-
-            rotors.Add(rotorA);
-            rotors.Add(rotorB);
-            rotors.Add(rotorC);
-            rotors.Add(reflector);
-
-            Enigma enigma = new Enigma(rotors);
-
-            enigma.SetEncryptionKey("AAAA");
-
-            List<int> cipherpermutations;
-            List<int> plainpermutations;
-            char plainchar = 'A';
-            char cipherchar = enigma.PressKey(plainchar, out cipherpermutations);
-            char symmetricplainchar = enigma.PressKey(cipherchar, out plainpermutations);
-
-            Assert.AreEqual(symmetricplainchar, plainchar, "Encryption symmetry is not ensured.");
-        }
-
-        [TestMethod]
         public void SymmetryIsEnsuredWithAnyPresetAndAnyKeyAndOneLetter()
         {
             string dir = Path.Combine(DATA_PATH, "enigma.xml");

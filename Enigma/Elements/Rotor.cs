@@ -98,14 +98,34 @@ namespace Cryptography.Elements
             mapping = incrementedRotor;
         }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
         public Rotor()
         {
             // Use the default rotor type.
             type = RotorType.Rotor;
 
             mapping = GenerateReverseAlphabeticalConnections(26);
+
+            CalculateReverseOffsets();
+
             length = 26;
             this.initialMapping = mapping;
+        }
+
+        /// <summary>
+        /// Calculate the mapping offset when the current flows
+        /// back from the right side of the rotor to the left side. 
+        /// </summary>
+        private void CalculateReverseOffsets()
+        {
+            for (int i = 0; i < mapping.Length; i++)
+            {
+                int offset = mapping[i].Offset;
+
+                mapping[i + offset].ReverseOffset = -offset;
+            }
         }
 
         /// <summary>
@@ -116,10 +136,18 @@ namespace Cryptography.Elements
         public Rotor(string mapping, string type)
         {
             this.mapping = GenerateConnectionsFromMapping(mapping);
+
+            CalculateReverseOffsets();
+
             this.initialMapping = this.mapping;
 
             this.length = this.mapping.Length;
 
+            SetRotorType(type);
+        }
+
+        private void SetRotorType(string type)
+        {
             switch (type)
             {
                 case "rotor": this.type = RotorType.Rotor;
@@ -138,6 +166,9 @@ namespace Cryptography.Elements
         public Rotor(string mapping, RotorType type, bool ignoreInvalidMapping = false)
         {
             this.mapping = GenerateConnectionsFromMapping(mapping, ignoreInvalidMapping);
+
+            CalculateReverseOffsets();
+
             this.initialMapping = this.mapping;
 
             this.length = this.mapping.Length;
@@ -150,24 +181,15 @@ namespace Cryptography.Elements
             this.Descriptor = descriptor;
 
             this.mapping = GenerateConnectionsFromMapping(descriptor.Mapping);
+
+            CalculateReverseOffsets();
+
             this.initialMapping = this.mapping;
 
             this.length = this.mapping.Length;
 
-            switch (descriptor.Type)
-            {
-                case "rotor": this.type = RotorType.Rotor;
-                    break;
-
-                case "stator": this.type = RotorType.Stator;
-                    break;
-
-                case "reflector": this.type = RotorType.Reflector;
-                    break;
-
-                default: throw new RotorTypeException(string.Format("The type {0} is not a valid rotor type", type));
-            }
-        }        
+            SetRotorType(descriptor.Type);
+        }
 
         /// <summary>
         /// Generate an array of connection from the mapping input.
@@ -283,14 +305,24 @@ namespace Cryptography.Elements
             }
         }
 
-        public int GetOffsetFromKey(int key)
+        public int GetOffsetFromKey(int key, bool reverse)
         {
             if (key > 25 || key < 0)
             {
                 throw new ArgumentOutOfRangeException(string.Format("The key {0} is out of range. It must be between 0 and 25.", key));
             }
 
-            return mapping[key].Offset;
+            if (reverse)
+            {
+                int value = mapping[key].ReverseOffset;
+
+                return value % 26;
+            }
+
+            else
+            {
+                return mapping[key].Offset % 26;
+            }
         }
 
         /// <summary>

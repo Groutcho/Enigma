@@ -9,7 +9,7 @@ namespace Cryptography.Elements
     /// <summary>
     /// In the Enigma, the rotors were made of 26 electrical connections that mapped a letter X to another Y.
     /// </summary>
-    public struct Connection
+    public class Connection
     {
         private readonly int start;
         private readonly int end;
@@ -22,7 +22,7 @@ namespace Cryptography.Elements
         /// The function that maps X -> Y
         /// </summary>
         public int Offset { get { return offset; } }
-
+        public int ReverseOffset { get; set; }
         public Connection(char start, char end)
         {
             var alphabet = new AlphabetUtils();
@@ -35,7 +35,7 @@ namespace Cryptography.Elements
 
         public override string ToString()
         {
-            return string.Format("{0} <-> {1}", start, end);
+            return string.Format("{0} / {1}", offset, ReverseOffset);
         }
     }
 }

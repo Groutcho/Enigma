@@ -82,8 +82,8 @@ namespace Cryptography
             {
                 currentRotor = rotors[currentRotorIndex];
 
-                lastOffset = currentRotor.GetOffsetFromKey(lastIndex);
-                lastIndex += lastOffset * increment;
+                lastOffset = currentRotor.GetOffsetFromKey(lastIndex, increment < 0);
+                lastIndex += lastOffset;
 
                 if (lastIndex < 0)
                 {
